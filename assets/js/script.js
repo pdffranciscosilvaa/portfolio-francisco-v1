@@ -29,7 +29,7 @@ const I18N = {
     l_name: 'Nome', l_phone: 'Telefone', l_msg: 'Mensagem', send: 'Enviar mensagem',
     ok: 'Mensagem enviada. Obrigado!', err: 'Não foi possível enviar. Tente novamente ou use o email.',
     rights: 'Todos os direitos reservados.',
-    nav_journey: 'Trajetória', journey_title: 'Minha trajetória', wa: 'Chamar no WhatsApp',
+    nav_journey: 'Trajetória', journey_title: 'Minha trajetória', wa: 'Chamar no WhatsApp', avail: 'Aberto a novos projetos', open: 'Abrir projeto',
     t1: 'Estágio em Engenharia de Minas', t1d: 'Trabalho desenvolvido durante o estágio.',
     t2: 'Game Corrida e Projeto Panetone', t2d: 'Corrida 2D e site responsivo.',
     t3: 'Jogo DeadZone', t3d: 'Jogo de ação feito em JavaScript.',
@@ -57,7 +57,7 @@ const I18N = {
     l_name: 'Name', l_phone: 'Phone', l_msg: 'Message', send: 'Send message',
     ok: 'Message sent. Thank you!', err: "Couldn't send. Try again or use email.",
     rights: 'All rights reserved.',
-    nav_journey: 'Journey', journey_title: 'My journey', wa: 'Chat on WhatsApp',
+    nav_journey: 'Journey', journey_title: 'My journey', wa: 'Chat on WhatsApp', avail: 'Open to new projects', open: 'Open project',
     t1: 'Mining Engineering internship', t1d: 'Work developed during the internship.',
     t2: 'Racing Game and Panettone Project', t2d: '2D racing game and a responsive website.',
     t3: 'DeadZone game', t3d: 'Action game built with JavaScript.',
@@ -154,6 +154,34 @@ filterBtns.forEach(b => b.addEventListener('click', () => {
   filterBtns.forEach(x => x.classList.toggle('active', x === b));
   $$('.grid li').forEach(li => li.classList.toggle('hide', b.dataset.filter !== 'all' && li.dataset.cat !== b.dataset.filter));
 }));
+
+/* ---------- brilho que segue o mouse ---------- */
+if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  addEventListener('pointermove', e => {
+    document.body.style.setProperty('--mx', e.clientX + 'px');
+    document.body.style.setProperty('--my', e.clientY + 'px');
+  }, { passive: true });
+}
+
+/* ---------- janela de detalhes do projeto ---------- */
+const modal = $('[data-modal]');
+const mq = s => $(s, modal);
+$$('.grid .card').forEach(card => card.addEventListener('click', e => {
+  if (typeof modal.showModal !== 'function') return;
+  e.preventDefault();
+  const img = $('img', card), pic = mq('[data-m-img]');
+  pic.hidden = !img;
+  if (img) { pic.src = img.src; pic.alt = img.alt; }
+  mq('[data-m-title]').textContent = $('h3', card).textContent;
+  mq('[data-m-desc]').textContent = $('p', card).textContent;
+  mq('[data-m-tech]').textContent = $('small', card).textContent;
+  const link = mq('[data-m-link]');
+  link.hidden = !card.href;
+  if (card.href) link.href = card.href;
+  modal.showModal();
+}));
+mq('[data-close]').addEventListener('click', () => modal.close());
+modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
 
 /* ---------- copiar email ---------- */
 $$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
