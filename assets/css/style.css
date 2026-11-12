@@ -142,3 +142,20 @@ form .btn{justify-content:center;width:100%}
   .stats{gap:10px}.stats div{padding:16px 8px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.caret{animation:none}}
+
+/* selo, brilho do mouse e janela de projeto */
+[hidden]{display:none!important}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(520px circle at var(--mx,72%) var(--my,30%),color-mix(in srgb,var(--sea) 15%,transparent),transparent 70%)}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;margin-bottom:18px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--text);font-size:.9rem}
+.badge i{width:9px;height:9px;border-radius:50%;background:var(--sea);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--sea) 60%,transparent)}70%,100%{box-shadow:0 0 0 10px transparent}}
+.modal{margin:auto;width:min(640px,92vw);max-height:90vh;overflow:auto;padding:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--text)}
+.modal::backdrop{background:rgba(5,15,22,.72);backdrop-filter:blur(4px)}
+.modal[open]{animation:rise .35s var(--ease)}
+.modal img{width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--line)}
+.m-body{padding:24px;display:grid;gap:10px;justify-items:start}
+.m-body h3{font-size:1.7rem}
+.m-body small{color:var(--sea);font-weight:700}
+.m-body .btn{margin-top:8px}
+.close{position:absolute;right:12px;top:12px;z-index:1;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:var(--bg);border:1px solid var(--line);font-size:1.4rem;transition:var(--ease)}
+.close:hover{border-color:var(--sea)}
