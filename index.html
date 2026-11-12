@@ -39,6 +39,7 @@
 <main>
   <section class="hero wrap" id="home">
     <div class="hero-text">
+      <p class="badge"><i></i><span data-i18n="avail">Aberto a novos projetos</span></p>
       <p class="hello" data-i18n="hero_hi">Olá, eu sou</p>
       <h1>Francisco<br>Lisboa</h1>
       <p class="typed-line"><span data-i18n="hero_make">Eu crio sites</span> <span class="typed" data-typed></span><span class="caret"></span></p>
@@ -159,6 +160,17 @@
     <p>&copy; 2026 Francisco. <span data-i18n="rights">Todos os direitos reservados.</span></p>
   </div>
 </footer>
+
+<dialog class="modal" data-modal aria-labelledby="m-title">
+  <button class="close" type="button" data-close aria-label="Fechar"><ion-icon name="close-outline"></ion-icon></button>
+  <img data-m-img alt="">
+  <div class="m-body">
+    <h3 id="m-title" data-m-title></h3>
+    <p data-m-desc></p>
+    <small data-m-tech></small>
+    <a class="btn primary" data-m-link target="_blank" rel="noopener" data-i18n="open">Abrir projeto</a>
+  </div>
+</dialog>
 
 <a href="#top" class="go-top" data-top aria-label="Voltar ao topo"><ion-icon name="arrow-up"></ion-icon></a>
 
