@@ -159,3 +159,13 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .m-body .btn{margin-top:8px}
 .close{position:absolute;right:12px;top:12px;z-index:1;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:var(--bg);border:1px solid var(--line);font-size:1.4rem;transition:var(--ease)}
 .close:hover{border-color:var(--sea)}
+
+/* vídeos e navegação da janela */
+.card{position:relative}
+.card .preview{position:absolute;top:0;left:0;width:100%;aspect-ratio:16/10;object-fit:cover;opacity:0;transition:opacity .3s;pointer-events:none}
+.card .preview.show{opacity:1}
+.modal video,.modal iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000;object-fit:contain}
+.m-body{position:relative}
+.m-nav{position:absolute;right:20px;bottom:20px;display:flex;gap:8px}
+.m-nav button{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:var(--bg);border:1px solid var(--line);font-size:1.2rem;transition:var(--ease)}
+.m-nav button:hover{border-color:var(--sea);color:var(--sea)}
