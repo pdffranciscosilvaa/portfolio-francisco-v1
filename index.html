@@ -12,8 +12,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/style.css">
+  <meta name="theme-color" content="#0a1e2b">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Francisco Lisboa da Silva Lima","jobTitle":"Desenvolvedor Web","email":"mailto:franciscolisboalima14@gmail.com","sameAs":["https://github.com/pdffranciscosilvaa","https://www.linkedin.com/in/francisco-lisboa-da-silva-lima-1b8862306/","https://www.instagram.com/lims_fz/"]}</script>
 </head>
 <body class="dark_theme" id="top">
+<div class="progress" data-progress></div>
 
 <header class="header" data-header>
   <div class="wrap bar">
@@ -21,6 +24,7 @@
     <nav class="nav" data-nav aria-label="Principal">
       <a href="#about" data-i18n="nav_about">Sobre</a>
       <a href="#skills" data-i18n="nav_skills">Habilidades</a>
+      <a href="#journey" data-i18n="nav_journey">Trajetória</a>
       <a href="#projects" data-i18n="nav_projects">Projetos</a>
       <a href="#contact" data-i18n="nav_contact">Contato</a>
     </nav>
@@ -52,7 +56,7 @@
   <section class="wrap stats" aria-label="Números">
     <div><strong data-count="3">0</strong><span>+</span><p data-i18n="st1">anos de experiência</p></div>
     <div><strong data-count="30">0</strong><span>+</span><p data-i18n="st2">projetos concluídos</p></div>
-    <div><strong data-count="6">0</strong><span></span><p data-i18n="st3">projetos no ar</p></div>
+    <div><strong data-count="5">0</strong><span></span><p data-i18n="st3">projetos no ar</p></div>
   </section>
 
   <section class="wrap about" id="about">
@@ -78,6 +82,17 @@
       <li style="--lvl:90%"><img src="./assets/images/vs-code.png" alt=""><b>VS Code</b><i></i></li>
       <li style="--lvl:75%"><img src="./assets/images/trello.png" alt=""><b>Trello</b><i></i></li>
     </ul>
+  </section>
+
+  <section class="wrap" id="journey">
+    <h2 data-i18n="journey_title">Minha trajetória</h2>
+    <ol class="timeline">
+      <li><time>Jun 2024</time><h3 data-i18n="t1">Estágio em Engenharia de Minas</h3><p data-i18n="t1d">Trabalho desenvolvido durante o estágio.</p></li>
+      <li><time>Mar 2025</time><h3 data-i18n="t2">Game Corrida e Projeto Panetone</h3><p data-i18n="t2d">Corrida 2D e site responsivo.</p></li>
+      <li><time>Abr 2025</time><h3 data-i18n="t3">Jogo DeadZone</h3><p data-i18n="t3d">Jogo de ação feito em JavaScript.</p></li>
+      <li><time>Mai 2025</time><h3 data-i18n="t4">Rede Modesto</h3><p data-i18n="t4d">Projeto particular para uma rede de postos.</p></li>
+      <li><time>Ago 2026</time><h3 data-i18n="t5">Super Racer 3D</h3><p data-i18n="t5d">Corrida em 3D com loja de carros, em testes.</p></li>
+    </ol>
   </section>
 
   <section class="wrap" id="projects">
@@ -116,8 +131,9 @@
       <p data-i18n="contact_text">Conte como posso ajudar. Preencha o formulário e eu respondo o quanto antes.</p>
       <ul class="info">
         <li><ion-icon name="call-outline"></ion-icon><a href="tel:+5548998539413">(48) 9 9853-9413</a></li>
-        <li><ion-icon name="mail-outline"></ion-icon><a href="mailto:franciscolisboalima14@gmail.com">franciscolisboalima14@gmail.com</a></li>
+        <li><ion-icon name="mail-outline"></ion-icon><a href="mailto:franciscolisboalima14@gmail.com">franciscolisboalima14@gmail.com</a><button class="copy" type="button" data-copy="franciscolisboalima14@gmail.com" aria-label="Copiar email"><ion-icon name="copy-outline"></ion-icon></button></li>
       </ul>
+      <a class="btn primary wa" href="https://wa.me/5548998539413" target="_blank" rel="noopener"><ion-icon name="logo-whatsapp"></ion-icon><span data-i18n="wa">Chamar no WhatsApp</span></a>
       <div class="social">
         <a href="https://github.com/pdffranciscosilvaa" aria-label="GitHub" target="_blank" rel="noopener"><ion-icon name="logo-github"></ion-icon></a>
         <a href="https://www.linkedin.com/in/francisco-lisboa-da-silva-lima-1b8862306/" aria-label="LinkedIn" target="_blank" rel="noopener"><ion-icon name="logo-linkedin"></ion-icon></a>
