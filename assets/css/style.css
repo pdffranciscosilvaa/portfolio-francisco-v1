@@ -39,6 +39,8 @@ p{color:var(--muted)}
 .chip ion-icon{font-size:1.2rem}
 .burger{display:none}
 
+.progress{position:fixed;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--sea),var(--sun));transform:scaleX(0);transform-origin:0 50%;z-index:30}
+
 /* hero */
 .hero{min-height:100vh;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:40px;padding-top:120px}
 .hello{font-weight:500;margin-bottom:8px}
@@ -74,6 +76,14 @@ p{color:var(--muted)}
 .skills i::after{content:"";position:absolute;inset:0 auto 0 0;width:0;background:var(--sea);border-radius:inherit;transition:width 1.2s var(--ease)}
 .skills.in i::after{width:var(--lvl)}
 
+/* trajetória */
+.timeline{max-width:640px;margin-left:8px;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 34px 28px}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--sea);box-shadow:0 0 0 4px var(--bg)}
+.timeline time{font-weight:700;color:var(--sea);font-size:.9rem}
+.timeline h3{font-size:1.25rem;margin:2px 0 4px}
+
 /* projects */
 .filters{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
@@ -93,6 +103,11 @@ a.card:hover{transform:translateY(-6px);border-color:var(--sea)}
 .info{margin:24px 0}
 .info li{display:flex;align-items:center;gap:12px;margin-bottom:10px;word-break:break-word}
 .info ion-icon{font-size:1.4rem;color:var(--sea)}
+.copy{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);transition:var(--ease)}
+.copy ion-icon{font-size:1rem}
+.copy:hover{border-color:var(--sea)}
+.wa{gap:8px;margin-bottom:24px}
+.wa ion-icon{font-size:1.3rem}
 .info a:hover{color:var(--sea)}
 .social{display:flex;gap:10px}
 .social a{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);font-size:1.3rem;transition:var(--ease)}
