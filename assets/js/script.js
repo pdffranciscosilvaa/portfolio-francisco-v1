@@ -166,21 +166,76 @@ if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motio
 /* ---------- janela de detalhes do projeto ---------- */
 const modal = $('[data-modal]');
 const mq = s => $(s, modal);
-$$('.grid .card').forEach(card => card.addEventListener('click', e => {
-  if (typeof modal.showModal !== 'function') return;
-  e.preventDefault();
+const ytId = u => (u.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/) || [])[1];
+const cards = () => $$('.grid li:not(.hide) .card');
+let current = null;
+
+function stopMedia() {
+  const v = mq('[data-m-video]'), f = mq('[data-m-frame]');
+  v.pause(); v.removeAttribute('src'); v.load(); v.hidden = true;
+  f.removeAttribute('src'); f.hidden = true;
+}
+
+function openCard(card) {
+  current = card;
+  stopMedia();
   const img = $('img', card), pic = mq('[data-m-img]');
+  const vid = mq('[data-m-video]'), frame = mq('[data-m-frame]');
+  const src = card.dataset.video, id = src && ytId(src);
   pic.hidden = !img;
   if (img) { pic.src = img.src; pic.alt = img.alt; }
+  if (id) {
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
+    frame.hidden = false; pic.hidden = true;
+  } else if (src) {
+    vid.poster = img ? img.src : '';
+    vid.onerror = () => { vid.hidden = true; pic.hidden = !img; };
+    vid.src = src; vid.hidden = false; pic.hidden = true;
+    vid.play().catch(() => {});
+  }
   mq('[data-m-title]').textContent = $('h3', card).textContent;
   mq('[data-m-desc]').textContent = $('p', card).textContent;
   mq('[data-m-tech]').textContent = $('small', card).textContent;
   const link = mq('[data-m-link]');
   link.hidden = !card.href;
   if (card.href) link.href = card.href;
-  modal.showModal();
+  if (!modal.open) modal.showModal();
+}
+
+$$('.grid .card').forEach(card => card.addEventListener('click', e => {
+  if (typeof modal.showModal !== 'function') return;
+  e.preventDefault();
+  openCard(card);
 }));
+
+const step = d => { const l = cards(), i = l.indexOf(current); openCard(l[(i + d + l.length) % l.length]); };
+mq('[data-prev]').addEventListener('click', () => step(-1));
+mq('[data-next]').addEventListener('click', () => step(1));
+addEventListener('keydown', e => {
+  if (!modal.open) return;
+  if (e.key === 'ArrowRight') step(1);
+  if (e.key === 'ArrowLeft') step(-1);
+});
 mq('[data-close]').addEventListener('click', () => modal.close());
+modal.addEventListener('close', stopMedia);
+
+/* prévia em vídeo ao passar o mouse no card (só computador) */
+if (matchMedia('(hover: hover)').matches) $$('.grid .card[data-video]').forEach(card => {
+  const src = card.dataset.video, img = $('img', card);
+  if (!img || ytId(src)) return;
+  let v;
+  card.addEventListener('pointerenter', () => {
+    if (!v) {
+      v = document.createElement('video');
+      Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'metadata', className: 'preview' });
+      v.addEventListener('playing', () => v.classList.add('show'));
+      v.addEventListener('error', () => v.remove());
+      v.src = src; img.after(v);
+    }
+    v.play().catch(() => {});
+  });
+  card.addEventListener('pointerleave', () => { if (v) { v.pause(); v.classList.remove('show'); } });
+});
 modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
 
 /* ---------- copiar email ---------- */
