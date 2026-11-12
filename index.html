@@ -104,22 +104,22 @@
       <button class="chip" data-filter="site" data-i18n="f_site">Sites</button>
     </div>
     <ul class="grid">
-      <li data-cat="game"><a class="card" href="https://reservacriado.netlify.app/" target="_blank" rel="noopener">
+      <li data-cat="game"><a class="card" href="https://reservacriado.netlify.app/" target="_blank" rel="noopener" data-video="./assets/videos/deadzone.mp4">
         <img src="./assets/images/deadzone.png" alt="Jogo DeadZone" loading="lazy">
         <div><h3>Jogo DeadZone</h3><p data-i18n="p1">Jogo de ação feito em JavaScript.</p><small>HTML · CSS · JS</small></div></a></li>
-      <li data-cat="game"><a class="card" href="https://game-corrida1.netlify.app/" target="_blank" rel="noopener">
+      <li data-cat="game"><a class="card" href="https://game-corrida1.netlify.app/" target="_blank" rel="noopener" data-video="./assets/videos/gamecorrida.mp4">
         <img src="./assets/images/gamecorrida.png" alt="Game Corrida" loading="lazy">
         <div><h3>Game Corrida</h3><p data-i18n="p2">Corrida 2D com pontuação e obstáculos.</p><small>HTML · CSS · JS</small></div></a></li>
-      <li data-cat="game"><a class="card" href="https://racercar3d.netlify.app/" target="_blank" rel="noopener">
+      <li data-cat="game"><a class="card" href="https://racercar3d.netlify.app/" target="_blank" rel="noopener" data-video="./assets/videos/jogo3d.mp4">
         <img src="./assets/images/jogo3d.png" alt="Jogo de corrida 3D" loading="lazy" onerror="this.remove()">
         <div><h3>Super Racer 3D</h3><p data-i18n="p3">Corrida em 3D com loja de carros (em testes).</p><small>JavaScript 3D</small></div></a></li>
-      <li data-cat="site"><a class="card" href="https://panetone-projeto.netlify.app/" target="_blank" rel="noopener">
+      <li data-cat="site"><a class="card" href="https://panetone-projeto.netlify.app/" target="_blank" rel="noopener" data-video="./assets/videos/panetone.mp4">
         <img src="./assets/images/panetone.png" alt="Projeto Panetone" loading="lazy">
         <div><h3>Projeto Panetone</h3><p data-i18n="p4">Site responsivo para uma marca de panetones.</p><small>HTML · CSS · JS</small></div></a></li>
-      <li data-cat="site"><a class="card" href="https://modestoposto.netlify.app/" target="_blank" rel="noopener">
+      <li data-cat="site"><a class="card" href="https://modestoposto.netlify.app/" target="_blank" rel="noopener" data-video="./assets/videos/modesto.mp4">
         <img src="./assets/images/modesto.png" alt="Rede Modesto" loading="lazy">
         <div><h3>Rede Modesto</h3><p data-i18n="p5">Projeto particular para uma rede de postos.</p><small>HTML · CSS · JS</small></div></a></li>
-      <li data-cat="site"><div class="card">
+      <li data-cat="site"><div class="card" data-video="./assets/videos/minas.mp4">
         <img src="./assets/images/minas.png" alt="Estágio em Engenharia de Minas" loading="lazy">
         <div><h3 data-i18n="p6t">Estágio em Engenharia de Minas</h3><p data-i18n="p6">Trabalho desenvolvido durante o estágio.</p><small>2024</small></div></div></li>
     </ul>
@@ -164,11 +164,14 @@
 <dialog class="modal" data-modal aria-labelledby="m-title">
   <button class="close" type="button" data-close aria-label="Fechar"><ion-icon name="close-outline"></ion-icon></button>
   <img data-m-img alt="">
+  <video data-m-video controls muted loop playsinline hidden></video>
+  <iframe data-m-frame title="Vídeo do projeto" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy" hidden></iframe>
   <div class="m-body">
     <h3 id="m-title" data-m-title></h3>
     <p data-m-desc></p>
     <small data-m-tech></small>
     <a class="btn primary" data-m-link target="_blank" rel="noopener" data-i18n="open">Abrir projeto</a>
+    <div class="m-nav"><button type="button" data-prev aria-label="Projeto anterior"><ion-icon name="chevron-back-outline"></ion-icon></button><button type="button" data-next aria-label="Próximo projeto"><ion-icon name="chevron-forward-outline"></ion-icon></button></div>
   </div>
 </dialog>
 
