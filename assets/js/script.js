@@ -1,176 +1,162 @@
 'use strict';
 
-/**
- * element toggle function
- */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const store = {
+  get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch {} }
+};
 
-const elemToggleFunc = function (elem) { elem.classList.toggle("active"); }
-
-
-
-/**
- * header sticky & go to top
- */
-
-const header = document.querySelector("[data-header]");
-const goTopBtn = document.querySelector("[data-go-top]");
-
-window.addEventListener("scroll", function () {
-
-  if (window.scrollY >= 10) {
-    header.classList.add("active");
-    goTopBtn.classList.add("active");
-  } else {
-    header.classList.remove("active");
-    goTopBtn.classList.remove("active");
+/* ---------- idiomas ---------- */
+const I18N = {
+  pt: {
+    nav_about: 'Sobre', nav_skills: 'Habilidades', nav_projects: 'Projetos', nav_contact: 'Contato',
+    hero_hi: 'Olá, eu sou', hero_make: 'Eu crio sites',
+    hero_sub: 'Desenvolvedor web apaixonado por transformar ideias em aplicações limpas, rápidas e fáceis de usar.',
+    cta_projects: 'Ver projetos', cta_contact: 'Fale comigo',
+    st1: 'anos de experiência', st2: 'projetos concluídos', st3: 'projetos no ar',
+    about_title: 'Preciso de um produto criativo? Posso ajudar.',
+    about_text: 'Sou Francisco Lisboa, desenvolvedor com paixão por criar aplicações web limpas e com funcionalidades intuitivas. Gosto de transformar ideias em realidade com soluções criativas e estou sempre aprendendo novas ferramentas e conceitos. Além de projetos full stack solo, já trabalhei em equipes criativas, com reuniões diárias, controle de versão e gestão de projetos.',
+    hire: 'Contrate-me', cv: 'Baixar currículo',
+    skills_title: 'O que eu uso no dia a dia', proj_title: 'Projetos para explorar',
+    f_all: 'Todos', f_game: 'Jogos', f_site: 'Sites',
+    p1: 'Jogo de ação feito em JavaScript.', p2: 'Corrida 2D com pontuação e obstáculos.',
+    p3: 'Corrida em 3D com loja de carros (em testes).', p4: 'Site responsivo para uma marca de panetones.',
+    p5: 'Projeto particular para uma rede de postos.', p6t: 'Estágio em Engenharia de Minas', p6: 'Trabalho desenvolvido durante o estágio.',
+    more: 'Ver mais no GitHub',
+    contact_title: 'Tem um projeto? Mande uma mensagem.',
+    contact_text: 'Conte como posso ajudar. Preencha o formulário e eu respondo o quanto antes.',
+    l_name: 'Nome', l_phone: 'Telefone', l_msg: 'Mensagem', send: 'Enviar mensagem',
+    ok: 'Mensagem enviada. Obrigado!', err: 'Não foi possível enviar. Tente novamente ou use o email.',
+    rights: 'Todos os direitos reservados.',
+    words: ['rápidos.', 'interativos.', 'responsivos.', 'com cara de profissional.']
+  },
+  en: {
+    nav_about: 'About', nav_skills: 'Skills', nav_projects: 'Projects', nav_contact: 'Contact',
+    hero_hi: "Hi, I'm", hero_make: 'I build websites that are',
+    hero_sub: 'Web developer who loves turning ideas into clean, fast and easy-to-use applications.',
+    cta_projects: 'See projects', cta_contact: 'Get in touch',
+    st1: 'years of experience', st2: 'completed projects', st3: 'projects online',
+    about_title: 'Need a creative product? I can help.',
+    about_text: "I'm Francisco Lisboa, a developer passionate about building clean web applications with intuitive features. I enjoy turning ideas into reality with creative solutions and I'm always learning new tools and concepts. Besides solo full stack projects, I have worked with creative teams, using daily stand-ups, source control and project management.",
+    hire: 'Hire me', cv: 'Download CV',
+    skills_title: 'What I use every day', proj_title: 'Projects to explore',
+    f_all: 'All', f_game: 'Games', f_site: 'Websites',
+    p1: 'Action game built with JavaScript.', p2: '2D racing with score and obstacles.',
+    p3: '3D racing game with a car shop (in testing).', p4: 'Responsive website for a panettone brand.',
+    p5: 'Private project for a gas station chain.', p6t: 'Mining Engineering internship', p6: 'Work developed during the internship.',
+    more: 'See more on GitHub',
+    contact_title: 'Got a project? Send a message.',
+    contact_text: "Tell me how I can help. Fill in the form and I'll reply as soon as possible.",
+    l_name: 'Name', l_phone: 'Phone', l_msg: 'Message', send: 'Send message',
+    ok: 'Message sent. Thank you!', err: "Couldn't send. Try again or use email.",
+    rights: 'All rights reserved.',
+    words: ['fast.', 'interactive.', 'responsive.', 'professional.']
   }
+};
+let lang = store.get('lang') || (navigator.language.startsWith('pt') ? 'pt' : 'en');
+const langBtn = $('[data-lang]');
 
+function applyLang() {
+  const d = I18N[lang];
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  $$('[data-i18n]').forEach(el => { if (d[el.dataset.i18n]) el.textContent = d[el.dataset.i18n]; });
+  langBtn.textContent = lang === 'pt' ? 'EN' : 'PT';
+  startTyping();
+}
+langBtn.addEventListener('click', () => { lang = lang === 'pt' ? 'en' : 'pt'; store.set('lang', lang); applyLang(); });
+
+/* ---------- efeito de digitação ---------- */
+const typedEl = $('[data-typed]');
+let typeTimer;
+function startTyping() {
+  clearTimeout(typeTimer);
+  const words = I18N[lang].words;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { typedEl.textContent = words[0]; return; }
+  let w = 0, c = 0, del = false;
+  (function tick() {
+    const word = words[w];
+    typedEl.textContent = word.slice(0, c);
+    if (!del && c === word.length) { del = true; return (typeTimer = setTimeout(tick, 1600)); }
+    if (del && c === 0) { del = false; w = (w + 1) % words.length; }
+    c += del ? -1 : 1;
+    typeTimer = setTimeout(tick, del ? 40 : 80);
+  })();
+}
+
+/* ---------- tema ---------- */
+function setTheme(t) {
+  document.body.classList.toggle('dark_theme', t === 'dark');
+  document.body.classList.toggle('light_theme', t === 'light');
+  store.set('theme', t);
+}
+setTheme(store.get('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+$('[data-theme-btn]').addEventListener('click', () =>
+  setTheme(document.body.classList.contains('dark_theme') ? 'light' : 'dark'));
+
+/* ---------- menu mobile ---------- */
+const nav = $('[data-nav]'), burger = $('[data-burger]');
+const closeNav = () => { nav.classList.remove('open'); burger.firstElementChild.setAttribute('name', 'menu-outline'); document.body.style.overflow = ''; };
+burger.addEventListener('click', () => {
+  const open = nav.classList.toggle('open');
+  burger.firstElementChild.setAttribute('name', open ? 'close-outline' : 'menu-outline');
+  document.body.style.overflow = open ? 'hidden' : '';
 });
+$$('a', nav).forEach(a => a.addEventListener('click', closeNav));
 
+/* ---------- scroll: header, voltar ao topo, link ativo ---------- */
+const header = $('[data-header]'), top = $('[data-top]');
+addEventListener('scroll', () => {
+  const y = scrollY > 20;
+  header.classList.toggle('active', y);
+  top.classList.toggle('active', scrollY > 500);
+}, { passive: true });
 
+const links = $$('.nav a');
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) links.forEach(a => a.classList.toggle('current', a.hash === '#' + e.target.id));
+}), { rootMargin: '-45% 0px -50% 0px' });
+$$('main section[id]').forEach(s => spy.observe(s));
 
-/**
- * navbar toggle
- */
-
-const navToggleBtn = document.querySelector("[data-nav-toggle-btn]");
-const navbar = document.querySelector("[data-navbar]");
-
-navToggleBtn.addEventListener("click", function () {
-
-  elemToggleFunc(navToggleBtn);
-  elemToggleFunc(navbar);
-  elemToggleFunc(document.body);
-
-});
-
-
-
-/**
- * skills toggle
- */
-
-const toggleBtnBox = document.querySelector("[data-toggle-box]");
-const toggleBtns = document.querySelectorAll("[data-toggle-btn]");
-const skillsBox = document.querySelector("[data-skills-box]");
-
-for (let i = 0; i < toggleBtns.length; i++) {
-  toggleBtns[i].addEventListener("click", function () {
-
-    elemToggleFunc(toggleBtnBox);
-    for (let i = 0; i < toggleBtns.length; i++) { elemToggleFunc(toggleBtns[i]); }
-    elemToggleFunc(skillsBox);
-
+/* ---------- contadores e barras de habilidades ---------- */
+const once = new IntersectionObserver((es, obs) => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  obs.unobserve(e.target);
+  if (e.target.matches('.stats')) $$('[data-count]', e.target).forEach(n => {
+    const end = +n.dataset.count, t0 = performance.now();
+    (function step(t) {
+      const p = Math.min((t - t0) / 1200, 1);
+      n.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
   });
-}
+  else e.target.classList.add('in');
+}), { threshold: .3 });
+$$('.stats, .skills').forEach(el => once.observe(el));
 
+/* ---------- filtro de projetos ---------- */
+const filterBtns = $$('[data-filter]');
+filterBtns.forEach(b => b.addEventListener('click', () => {
+  filterBtns.forEach(x => x.classList.toggle('active', x === b));
+  $$('.grid li').forEach(li => li.classList.toggle('hide', b.dataset.filter !== 'all' && li.dataset.cat !== b.dataset.filter));
+}));
 
-
-/**
- * dark & light theme toggle
- */
-
-const themeToggleBtn = document.querySelector("[data-theme-btn]");
-
-themeToggleBtn.addEventListener("click", function () {
-
-  elemToggleFunc(themeToggleBtn);
-
-  if (themeToggleBtn.classList.contains("active")) {
-    document.body.classList.remove("dark_theme");
-    document.body.classList.add("light_theme");
-
-    localStorage.setItem("theme", "light_theme");
-  } else {
-    document.body.classList.add("dark_theme");
-    document.body.classList.remove("light_theme");
-
-    localStorage.setItem("theme", "dark_theme");
+/* ---------- formulário (Netlify Forms) ---------- */
+const form = $('[data-form]'), status = $('[data-status]');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  status.className = 'status';
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    });
+    if (!res.ok) throw new Error(res.status);
+    status.textContent = I18N[lang].ok; status.classList.add('ok'); form.reset();
+  } catch {
+    status.textContent = I18N[lang].err; status.classList.add('err');
   }
-
 });
 
-/**
- * check & apply last time selected theme from localStorage
- */
-
-if (localStorage.getItem("theme") === "light_theme") {
-  themeToggleBtn.classList.add("active");
-  document.body.classList.remove("dark_theme");
-  document.body.classList.add("light_theme");
-} else {
-  themeToggleBtn.classList.remove("active");
-  document.body.classList.remove("light_theme");
-  document.body.classList.add("dark_theme");
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-//Função que formata a hora por Extenso
-//////////////////////////////////////////////////////////////////////////
-function TempoExtenso() {
-  TempoAtual = new Date();
-  HoraAtual = TempoAtual.getHours();
-  MinutoAtual = TempoAtual.getMinutes();
-  SegundoAtual = TempoAtual.getSeconds();
-
-  TempoAuxiliar = (HoraAtual > 24) ? HoraAtual - 24 : HoraAtual;
-  if (TempoAuxiliar == "0") MomentoAuxiliar = 24;
-  TempoAuxiliar += ((MinutoAtual < 10) ? ":0" : ":") + MinutoAtual;
-  TempoAuxiliar += ((SegundoAtual < 10) ? ":0" : ":") + SegundoAtual;
-
-  return TempoAuxiliar;		
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Função que formata a data por Extenso
-//////////////////////////////////////////////////////////////////////////
-function DataExtenso() {		
-  const ArrayDia = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-  const ArrayMes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-
-  const DataAtual = new Date();
-  let AnoAtual = DataAtual.getFullYear(); // Use getFullYear() para obter o ano correto
-  const DiaSemana = DataAtual.getDay();
-  const MesAtual = DataAtual.getMonth();
-  const DiaAtual = DataAtual.getDate();
-
-  let DataAuxiliar = ArrayDia[DiaSemana] + ", ";
-  DataAuxiliar += DiaAtual + " de ";
-  DataAuxiliar += ArrayMes[MesAtual] + " de " + AnoAtual;
-
-  return DataAuxiliar;
-}	
-
-//////////////////////////////////////////////////////////////////////////
-// Função que formata a hora por Extenso
-//////////////////////////////////////////////////////////////////////////
-function TempoExtenso() {
-  const DataAtual = new Date();
-  let horas = DataAtual.getHours();
-  let minutos = DataAtual.getMinutes();
-  let segundos = DataAtual.getSeconds();
-
-  // Adiciona zero à esquerda se necessário
-  horas = horas < 10 ? '0' + horas : horas;
-  minutos = minutos < 10 ? '0' + minutos : minutos;
-  segundos = segundos < 10 ? '0' + segundos : segundos;
-
-  return `${horas}:${minutos}:${segundos}`;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Função que formata a data e hora por Extenso
-//////////////////////////////////////////////////////////////////////////
-function DataHoraExtenso(IdObjeto) {	
-  document.getElementById(IdObjeto).innerHTML = DataExtenso() + " - " + TempoExtenso();
-}
-
-// index.html
-document.addEventListener("DOMContentLoaded", function() {
-  DataHoraExtenso('DataHoraAtual');
-
-  setInterval(() => {
-    DataHoraExtenso('DataHoraAtual');
-  }, 1000);
-});
+applyLang();
