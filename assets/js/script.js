@@ -29,6 +29,12 @@ const I18N = {
     l_name: 'Nome', l_phone: 'Telefone', l_msg: 'Mensagem', send: 'Enviar mensagem',
     ok: 'Mensagem enviada. Obrigado!', err: 'Não foi possível enviar. Tente novamente ou use o email.',
     rights: 'Todos os direitos reservados.',
+    nav_journey: 'Trajetória', journey_title: 'Minha trajetória', wa: 'Chamar no WhatsApp',
+    t1: 'Estágio em Engenharia de Minas', t1d: 'Trabalho desenvolvido durante o estágio.',
+    t2: 'Game Corrida e Projeto Panetone', t2d: 'Corrida 2D e site responsivo.',
+    t3: 'Jogo DeadZone', t3d: 'Jogo de ação feito em JavaScript.',
+    t4: 'Rede Modesto', t4d: 'Projeto particular para uma rede de postos.',
+    t5: 'Super Racer 3D', t5d: 'Corrida em 3D com loja de carros, em testes.',
     words: ['rápidos.', 'interativos.', 'responsivos.', 'com cara de profissional.']
   },
   en: {
@@ -51,6 +57,12 @@ const I18N = {
     l_name: 'Name', l_phone: 'Phone', l_msg: 'Message', send: 'Send message',
     ok: 'Message sent. Thank you!', err: "Couldn't send. Try again or use email.",
     rights: 'All rights reserved.',
+    nav_journey: 'Journey', journey_title: 'My journey', wa: 'Chat on WhatsApp',
+    t1: 'Mining Engineering internship', t1d: 'Work developed during the internship.',
+    t2: 'Racing Game and Panettone Project', t2d: '2D racing game and a responsive website.',
+    t3: 'DeadZone game', t3d: 'Action game built with JavaScript.',
+    t4: 'Rede Modesto', t4d: 'Private project for a gas station chain.',
+    t5: 'Super Racer 3D', t5d: '3D racing game with a car shop, in testing.',
     words: ['fast.', 'interactive.', 'responsive.', 'professional.']
   }
 };
@@ -105,11 +117,13 @@ burger.addEventListener('click', () => {
 $$('a', nav).forEach(a => a.addEventListener('click', closeNav));
 
 /* ---------- scroll: header, voltar ao topo, link ativo ---------- */
-const header = $('[data-header]'), top = $('[data-top]');
+const header = $('[data-header]'), topBtn = $('[data-top]'), progress = $('[data-progress]');
 addEventListener('scroll', () => {
   const y = scrollY > 20;
   header.classList.toggle('active', y);
-  top.classList.toggle('active', scrollY > 500);
+  topBtn.classList.toggle('active', scrollY > 500);
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progress.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
 }, { passive: true });
 
 const links = $$('.nav a');
@@ -139,6 +153,14 @@ const filterBtns = $$('[data-filter]');
 filterBtns.forEach(b => b.addEventListener('click', () => {
   filterBtns.forEach(x => x.classList.toggle('active', x === b));
   $$('.grid li').forEach(li => li.classList.toggle('hide', b.dataset.filter !== 'all' && li.dataset.cat !== b.dataset.filter));
+}));
+
+/* ---------- copiar email ---------- */
+$$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(b.dataset.copy); } catch { return; }
+  const ic = b.firstElementChild;
+  ic.setAttribute('name', 'checkmark-outline');
+  setTimeout(() => ic.setAttribute('name', 'copy-outline'), 1600);
 }));
 
 /* ---------- formulário (Netlify Forms) ---------- */
